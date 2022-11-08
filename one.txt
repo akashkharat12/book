@@ -2,3 +2,4 @@ new repo , plz update
 yes, done from github
 hello
 hello world
+check version
