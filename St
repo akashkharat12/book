@@ -1,0 +1,30 @@
+low order –
+
+Prepare a new disk for /tmp
+Create LV on new disk (pvcreate, lvcreate)
+pvcreate /dev/sdb
+vgcreate vg_tmp /dev/sdb
+lvcreate -l 100%FREE -n lv_tmp vg_tmp
+Format LV with the filesystem of your choice
+mkfs.ext4 /dev/vg_tmp/lv_tmp
+Mount it on a temporary mount
+mount /dev/vg_tmp/lv_tmp /mnt
+Copy data from /tmp directory to the new disk
+cp -pr /tmp/* /mnt
+ls -lrt /mnt
+ls -lrt /tmp
+Reboot server into single-user mode
+Prepare new /tmp mount point
+Delete/move existing /tmp directory depending on space availability in /
+rm -rf /tmp OR
+mv /tmp /tmp.orig
+Create new /tmp for the mount point
+mkdir /tmp
+Set permission and ownership
+chmod 1777 /tmp
+chown root:root /tmp
+Add entry in /etc/fstab
+echo “/dev/vg_tmp/lv_tmp /tmp defaults 1 2″>>/etc/fstab
+Reboot the server normally.
+Log in and check /tmp is mounted as the separate mount point.
+Setting up permission 1777 is an important step in this. Otherwise /tmp will not function as it is expected to.
